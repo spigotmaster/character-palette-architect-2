@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Character Palette Architect</title>
-  <link rel="stylesheet" href="css/style.css">   <!-- 1. in the head -->
-</head>
-<body>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Character Palette Architect</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f3;--ink:#2b2d33;--mut:#7b7e87;--line:#b9bdc9;--card:#fff;--acc:#3d4f8a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181c;--ink:#e8e9ee;--mut:#9094a0;--line:#454a5a;--card:#1f2127;--acc:#8fa3ec}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 'DM Sans',system-ui,sans-serif}
+h1{font:italic 400 34px 'Instrument Serif',Georgia,serif;margin:0}
+.lbl{font:italic 400 24px 'Instrument Serif',Georgia,serif;color:var(--mut);margin:0 0 6px}
+header{padding:20px 20px 0;max-width:1200px;margin:auto}
+header p{margin:2px 0 0;color:var(--mut)}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;max-width:1200px;margin:16px auto;padding:0 20px}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.L{padding-right:24px;border-right:1.5px dashed var(--line)}
+.R{padding-left:24px}
+@media(max-width:860px){.L{padding:0;border:0}.R{padding:20px 0 0}}
+section{margin-bottom:20px}
+.drop{border:1.5px dashed var(--line);min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--mut);cursor:pointer;overflow:hidden;font-style:italic;font-family:'Instrument Serif',serif;font-size:22px}
+.drop img{max-width:100%;max-height:260px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts button,.tag{border:1.5px dashed var(--line);background:none;color:var(--ink);padding:5px 13px;border-radius:99px;font:inherit;cursor:pointer}
+.opts button[aria-pressed=true],.tag.on{border-style:solid;border-color:var(--acc);background:var(--acc);color:#fff}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+input[type=search]{width:100%;border:0;border-bottom:1.5px solid var(--acc);background:none;color:var(--ink);font:inherit;font-size:17px;padding:6px 0;margin-bottom:8px}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;border:1.5px dashed var(--line);padding:10px}
+.sw button{border:0;padding:0;background:var(--card);text-align:left;cursor:pointer;color:var(--ink);font:inherit;font-size:12px;border-radius:2px;overflow:hidden}
+.sw i{display:block;height:64px}
+.sw b{display:block;padding:4px 6px 0;font-weight:500}.sw span{display:block;padding:0 6px 5px;color:var(--mut)}
+.wheels{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:center}
+.wheel{padding:8px;border-radius:10px;border:2px solid transparent}
+.wheel.p{border-color:var(--acc)}.wheel.s{border:2px dashed var(--acc)}
+.wheel .ring{width:100%;max-width:150px;aspect-ratio:1;border-radius:50%;margin:6px auto;-webkit-mask:radial-gradient(circle,transparent 38%,#000 39%);mask:radial-gradient(circle,transparent 38%,#000 39%)}
+.wheel small{display:block;color:var(--mut);font-size:12px}
+.wheel .tg{font-size:12px;color:var(--acc);min-height:16px}
+.sl{display:grid;grid-template-columns:70px 1fr;gap:2px 10px;align-items:center;font-size:13px;margin-bottom:6px}
+.sl input{width:100%;accent-color:var(--acc)}
+.sl small{grid-column:2;display:flex;justify-content:space-between;color:var(--mut);margin-top:-4px}
+.why{border-left:3px solid var(--acc);padding:2px 0 2px 14px}
+.why h2{font:italic 400 26px 'Instrument Serif',serif;margin:0 0 4px}
+.why p{margin:0 0 8px}
+.chip{display:inline-block;font-size:12px;color:var(--mut);margin-right:12px}
+#vc{width:100%;max-width:420px;display:block}
+#cv{max-width:100%;border:1.5px solid var(--line);cursor:crosshair;display:block;margin:8px 0;background:#fff}
+.chipc{width:30px;height:30px;padding:0!important;border-radius:50%!important;border:2px solid var(--line)!important}
+.chipc[aria-pressed=true]{border-color:var(--ink)!important;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.hint{color:var(--mut);font-size:13px;margin:6px 0}
+.intro{border:1.5px dashed var(--line);padding:12px 14px;margin-top:12px}header .intro p{margin:0 0 8px;color:var(--ink)}
+.tr{position:relative}.rng{position:absolute;top:-3px;bottom:-3px;border:2px solid var(--acc);border-radius:3px;pointer-events:none}
+.wr{position:relative;max-width:150px;margin:6px auto}.wr .ring{margin:0;max-width:none}.wr i{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid #222;transform:translate(-50%,-50%)}
+.sw.no{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));margin-top:8px}.sw.no div{background:var(--card);font-size:12px;border-radius:2px;overflow:hidden}.sw.no i{background-image:linear-gradient(to top right,transparent 47%,rgba(0,0,0,.6) 48%,rgba(0,0,0,.6) 52%,transparent 53%)}
+</style></head><body>
 <header><h1>Character Palette Architect</h1><p>Colour palettes for characters, with the reasoning shown.</p><div class="intro"><p><b>How to use it:</b> choose a skin undertone and depth, tap one or more personality traits, then choose an age. All four choices are needed. Your 12-colour palette appears under step 3, with the season wheels, sliders and an explanation. Optionally, upload a sketch to try the colours on it.</p><div class="opts"><button id="ex">Try an example</button></div></div></header>
 <main>
 <div class="L">
@@ -13,7 +59,7 @@
 <label class="drop" id="drop" tabindex="0"><span id="dtxt">Upload a sketch (PNG, JPG, WEBP)</span><input id="file" type="file" accept="image/png,image/jpeg,image/webp" hidden></label></section>
 <section id="rc" hidden><p class="lbl">palette applied</p>
 <div class="opts" id="roles"></div>
-<p class="hint">Pick a part, pick a palette colour, then tap that area of the sketch. Shading is kept.</p>
+<p class="hint">The palette is applied automatically: skin from your skin tone, the biggest areas get the base colour, hair the support colour, small details the accent. Wrong spot? Pick a part, pick a colour, then tap that area. Works best on sketches with closed outlines.</p>
 <p class="hint" id="rcnote">Complete the three questions below to generate a palette first.</p>
 <div class="opts" id="rchips"></div>
 <canvas id="cv" aria-label="Recoloured character sketch"></canvas>
@@ -25,7 +71,7 @@
 <input type="search" id="q" placeholder="Search traits, select one or more" aria-label="Search personality traits">
 <div class="opts" id="traits"></div><div class="opts" style="margin-top:8px"><button id="clr">Clear traits</button></div></section>
 <section><p class="lbl">3. Character age</p><div class="opts" id="age" data-k="age"></div></section>
-<section id="pal"><p class="lbl">Your palette</p><div class="sw" id="sw"><span style="grid-column:1/-1;color:var(--mut)">Your 12 colours will appear here once you’ve done steps 1 to 3, or tap Try an example at the top.</span></div><div class="opts" style="margin-top:8px"><button id="copyall">Copy all hex codes</button><button id="savepal">Save palette</button></div><div id="cr"></div></section>
+<section id="pal"><p class="lbl">Your palette</p><div class="sw" id="sw"><span style="grid-column:1/-1;color:var(--mut)">Your 12 colours will appear here once you’ve done steps 1 to 3, or tap Try an example at the top.</span></div><div class="opts" style="margin-top:8px"><button id="copyall">Copy all hex codes</button><button id="savepal">Save palette</button></div><div id="cr"></div><div id="bad"></div></section>
 </div>
 <div class="R">
 <section><div class="wheels" id="wheels"></div><p class="hint">Dots mark the wheel colours used in your palette: eight on the primary wheel, four on the secondary.</p></section>
@@ -34,6 +80,105 @@
 <section class="why" id="why" hidden></section>
 </div>
 </main>
-<script src="js/app.js"></script>              <!-- 2. last thing before </body> -->
-</body>
-</html>
+<script>
+const $=s=>document.querySelector(s);
+const SEASONS={
+Spring:{warm:1,cols:[["Coral","#FF7F6B"],["Peach","#FFC19E"],["Warm Yellow","#FFD93D"],["Bright Green","#7ACB3B"],["Turquoise","#2BC4B4"],["Poppy","#F0503C"],["Golden Yellow","#F5B82E"],["Salmon Pink","#FF9AA2"],["Lime","#B5E04A"],["Aqua","#5ED6E0"],["Sky Blue","#5BA8F0"],["Buttercream","#FFF0B8"]],kw:"bright, playful and youthful"},
+Summer:{warm:0,cols:[["Dusty Rose","#D4A0A7"],["Lavender","#B8A9D9"],["Powder Blue","#A9C8E8"],["Cool Pink","#E88FB4"],["Soft Teal","#6FB5B0"],["Mauve","#9C7A97"],["Slate","#6B7A8F"],["Periwinkle","#8C9BD6"],["Rose Taupe","#A98B91"],["Sage Mist","#A9BFA8"],["Orchid","#C48BC7"],["Soft Navy","#4A5A7E"]],kw:"soft, cool and romantic"},
+Autumn:{warm:1,cols:[["Terracotta","#C8643C"],["Amber","#E0961F"],["Olive","#7D7A2E"],["Moss Green","#5A6B2F"],["Burnt Orange","#CC5500"],["Warm Brown","#6B4226"],["Goldenrod","#E8B830"],["Rust","#A8472A"],["Mustard","#C9A227"],["Forest Green","#2F4F2F"],["Chestnut","#8B4A2B"],["Deep Teal","#1F6E6B"]],kw:"rich, earthy and mature"},
+Winter:{warm:0,cols:[["Crimson","#B0173A"],["Royal Blue","#2A4BC0"],["Magenta","#D6107F"],["Emerald","#0B8A5A"],["Black","#14141A"],["Icy Pink","#F4C6DE"],["Pure White","#F6F8FF"],["Deep Purple","#4B1D6B"],["Ice Blue","#BFE3F7"],["Charcoal","#3A3D46"],["Burgundy","#6E1530"],["Midnight Navy","#14235A"]],kw:"high contrast, intense and dramatic"}};
+const T={Energetic:{Spring:2,Autumn:1},Passionate:{Autumn:2,Winter:1},Brave:{Autumn:2,Spring:1},Calm:{Summer:2},Elegant:{Summer:2,Winter:1},Mysterious:{Winter:2,Summer:1},Cute:{Spring:2,Summer:1},Romantic:{Summer:2,Spring:1},Heroic:{Winter:1,Autumn:1,Spring:1},Intelligent:{Winter:2,Summer:1},Earthy:{Autumn:2},Wise:{Autumn:1,Summer:1,Winter:1},Intense:{Winter:2,Autumn:1},Villainous:{Winter:2},Chaotic:{Spring:1,Winter:1},Royal:{Winter:2,Autumn:1}};
+const S={under:null,depth:null,age:null,traits:new Set(),calc:null,res:null};
+function mk(id,arr){const el=$('#'+id);arr.forEach(v=>{const b=document.createElement('button');b.textContent=v[0].toUpperCase()+v.slice(1);b.dataset.v=v;b.setAttribute('aria-pressed','false');b.onclick=()=>{S[el.dataset.k]=v;el.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));run()};el.appendChild(b)})}
+mk('under',['warm','cool']);mk('depth',['pale','medium','deep']);mk('age',['child','adult','elderly']);
+const SK={warm:'#E8B98A',cool:'#E8BFC0',pale:'#F6E3D6',medium:'#D9A982',deep:'#8A5A3C'};
+document.querySelectorAll('#under button,#depth button').forEach(b=>{const i=document.createElement('i');i.style.cssText='display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:7px;vertical-align:-2px;border:1px solid rgba(0,0,0,.3);background:'+SK[b.dataset.v];b.prepend(i)});
+function drawTraits(){const q=$('#q').value.toLowerCase();$('#traits').innerHTML='';Object.keys(T).filter(t=>t.toLowerCase().includes(q)).forEach(t=>{const b=document.createElement('button');b.className='tag'+(S.traits.has(t)?' on':'');b.textContent=t;b.setAttribute('aria-pressed',S.traits.has(t));b.onclick=()=>{S.traits.has(t)?S.traits.delete(t):S.traits.add(t);drawTraits();run()};$('#traits').appendChild(b)})}
+$('#q').oninput=drawTraits;drawTraits();
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const i=new Image();i.alt='Original character sketch';i.onload=()=>initRC(i);i.src=URL.createObjectURL(f);$('#drop').replaceChildren(i,$('#file'))};
+$('#drop').onkeydown=e=>{if(e.key==='Enter')$('#file').click()};
+// colour helpers
+const h2r=h=>{const n=parseInt(h.slice(1),16);return[n>>16,n>>8&255,n&255]};
+function rgb2hsl([r,g,b]){r/=255;g/=255;b/=255;const M=Math.max(r,g,b),m=Math.min(r,g,b),l=(M+m)/2;let h=0,s=0;if(M!=m){const d=M-m;s=l>.5?d/(2-M-m):d/(M+m);h=M==r?(g-b)/d+(g<b?6:0):M==g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s*100,l*100]}
+function hsl2hex(h,s,l){h=((h%360)+360)%360;s=Math.max(0,Math.min(100,s))/100;l=Math.max(4,Math.min(96,l))/100;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12;return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1))))};return'#'+[f(0),f(8),f(4)].map(x=>x.toString(16).padStart(2,'0')).join('').toUpperCase()}
+const cool=h=>100-(50+50*Math.cos((h-30)*Math.PI/180)); // 0 warm, 100 cool
+const AGE={child:{l:12,s:-8,sm:1},adult:{l:0,s:0,sm:1},elderly:{l:-8,s:0,sm:.6}};
+function score(){const sc={Spring:0,Summer:0,Autumn:0,Winter:0};S.traits.forEach(t=>{for(const k in T[t])sc[k]+=T[t][k]});
+const raw={...sc};for(const k in sc){if(!!SEASONS[k].warm===(S.under==='warm'))sc[k]+=1} // skin undertone bias
+const r=Object.entries(sc).sort((a,b)=>b[1]-a[1]||(!!SEASONS[b[0]].warm===(S.under==='warm'))-(!!SEASONS[a[0]].warm===(S.under==='warm')));return{raw,sc,p:r[0][0],s:r[1][0]}}
+function build(){const r=score(),a=AGE[S.age];const pick=[...SEASONS[r.p].cols.slice(0,8),...SEASONS[r.s].cols.slice(0,4)];
+const base=pick.map(([n,hex])=>{let[h,s,l]=rgb2hsl(h2r(hex));s=s*a.sm+a.s;l+=a.l;if(S.depth==='deep'){s+=8}if(S.depth==='pale'){l+=3;s-=4}return{n,h,s,l}});
+const m={cool:base.reduce((x,c)=>x+cool(c.h),0)/base.length,l:base.reduce((x,c)=>x+c.l,0)/base.length,s:base.reduce((x,c)=>x+c.s,0)/base.length};
+return{r,base,m}}
+function run(){try{localStorage.setItem('cpa',JSON.stringify({u:S.under,d:S.depth,a:S.age,t:[...S.traits]}))}catch(e){}
+$('#skinsel').textContent=(S.under||S.depth)?'Selected: '+[S.under&&S.under+' undertone',S.depth&&S.depth+' depth'].filter(Boolean).join(', '):'';if(!S.under||!S.depth||!S.age||!S.traits.size){S.res=S.out=null;$('#cr').innerHTML=$('#bad').innerHTML='';$('#why').hidden=true;const miss=[];if(!S.under)miss.push('skin undertone');if(!S.depth)miss.push('skin depth');if(!S.traits.size)miss.push('at least one trait');if(!S.age)miss.push('an age');$('#sw').innerHTML='<span style="grid-column:1/-1;color:var(--mut)">Still needed: '+miss.join(', ')+'.</span>';wheels(null);vc([]);rcChips();rcDraw();return}const first=!S.out;S.res=build();S.calc={...S.res.m};RC.auto=1;setSliders(S.calc);render();if(first&&!window.restoring&&window.innerWidth<860)$('#pal').scrollIntoView({behavior:'smooth',block:'start'})}
+function setSliders(v){$('#sliders').innerHTML='';[['Hue','cool','warm','cool'],['Value','l','light','dark'],['Chroma','s','muted','bright']].forEach(([n,k,lo,hi])=>{const d=document.createElement('div');d.className='sl';const val=k==='l'?100-v.l:v[k];d.innerHTML=`<label for="s${n}">${n}</label><div class="tr"><input id="s${n}" type="range" min="0" max="100" value="${Math.round(val)}" data-k="${k}"><i class="rng" id="r${n}"></i></div><small><span>${k==='cool'?'warm':lo}</span><span>${k==='cool'?'cool':hi}</span></small>`;d.querySelector('input').oninput=render;$('#sliders').appendChild(d)})}
+function render(){const R=S.res;if(!R)return;const c=S.calc;
+const dh=(+$('#sHue').value-c.cool)*.6,dl=-((+$('#sValue').value)-(100-c.l))*.4,ds=(+$('#sChroma').value-c.s)*.5;
+const out=R.base.map(x=>({n:x.n,h:x.h+dh,s:x.s+ds,l:x.l+dl}));out.forEach(x=>x.hex=hsl2hex(x.h,x.s,x.l));
+$('#sw').innerHTML='';[...out].sort((a,b)=>b.l-a.l).forEach(x=>{const b=document.createElement('button');b.title='Copy hex';b.innerHTML=`<i style="background:${x.hex}"></i><b>${x.n}</b><span>${x.hex}</span>`;b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(x.hex).catch(()=>{});b.querySelector('span').textContent='Copied'; setTimeout(()=>b.querySelector('span').textContent=x.hex,900)};$('#sw').appendChild(b)});
+wheels(R.r);vc(out);why(R,out);S.out=out;rng(out);roles60(out);avoid(out,R.r);rcChips();rcDraw()}
+function roles60(o){const b=[...o].sort((a,c)=>a.s-c.s),n=b.length,r=[[b[Math.floor(n/4)],60,'Base'],[b[Math.floor(n/2)],30,'Support'],[b[n-1],10,'Accent']];if(RC.auto){RC.assign={Clothing:o.indexOf(r[0][0]),Hair:o.indexOf(r[1][0]),Accessory:o.indexOf(r[2][0])};RC.auto=0}$('#cr').innerHTML='<p class="hint">Character design tip: split the colours 60/30/10 between base, support and accent.</p><div style="display:flex;height:44px;border:1.5px solid var(--line)">'+r.map(([c,w,t])=>`<div style="flex:${w};background:${c.hex};color:${c.l>55?'#111':'#fff'};font-size:12px;padding:4px 6px;overflow:hidden" title="${c.n}">${t} ${w}%</div>`).join('')+'</div>'}
+function rng(o){[['Hue',o.map(c=>cool(c.h))],['Value',o.map(c=>100-c.l)],['Chroma',o.map(c=>c.s)]].forEach(([n,a])=>{const lo=Math.max(0,Math.min(...a)),hi=Math.min(100,Math.max(...a)),e=$('#r'+n);if(e){e.style.left=lo+'%';e.style.width=Math.max(3,hi-lo)+'%'}})}
+function dots(n){let s='';for(let i=0;i<n;i++){const a=(i+.5)/12*2*Math.PI;s+=`<i style="left:${50+34.5*Math.sin(a)}%;top:${50-34.5*Math.cos(a)}%"></i>`}return s}
+function wheels(r){r=r||{p:'',s:'',sc:{}};const w=$('#wheels');w.innerHTML='';Object.keys(SEASONS).forEach(k=>{const cols=SEASONS[k].cols.map(c=>c[1]);const st=cols.map((c,i)=>`${c} ${i*100/cols.length}% ${(i+1)*100/cols.length}%`).join(',');const d=document.createElement('div');d.className='wheel'+(k===r.p?' p':k===r.s?' s':'');d.innerHTML=`<b>${k}</b><div class="wr"><div class="ring" style="background:conic-gradient(${st})"></div>${dots(k===r.p?8:k===r.s?4:0)}</div><div class="tg">${k===r.p?'Primary':k===r.s?'Secondary':''}</div><small>${SEASONS[k].warm?'Warm':'Cool'}${r.p?', score '+r.sc[k]:''}</small>`;w.appendChild(d)})}
+function cloud(x0,y0,pw,ph){let s='';const cw=pw/5,rh=ph/6;for(let ci=0;ci<5;ci++)for(let vi=0;vi<6;vi++){const sat=(ci+.5)*20,l=100*(1-(vi+.5)/6),cx=x0+(ci+.5)*cw,cy=y0+(vi+.5)*rh;for(let k=0;k<8;k++){const h=k*45,a=h*Math.PI/180;s+=`<circle cx="${(cx+Math.cos(a)*cw*.3).toFixed(1)}" cy="${(cy+Math.sin(a)*rh*.3).toFixed(1)}" r="2.8" fill="${hsl2hex(h,sat,l)}" opacity=".6"/>`}}
+['muted','soft','medium','strong','vivid'].forEach((n,i)=>s+=`<text x="${x0+(i+.5)*cw}" y="${y0+ph+13}" text-anchor="middle" font-size="10" fill="var(--mut)">${n}</text>`);
+['pale','light','soft','mid','deep','dark'].forEach((n,i)=>s+=`<text x="${x0-4}" y="${y0+(i+.5)*rh+3}" text-anchor="end" font-size="9" fill="var(--mut)">${n}</text>`);return s}
+function vc(o){const W=420,H=260,x0=40,y0=10,pw=W-x0-10,ph=H-y0-34;let s=cloud(x0,y0,pw,ph);s+=`<rect x="${x0}" y="${y0}" width="${pw}" height="${ph}" fill="none" stroke="var(--line)" stroke-dasharray="4 4"/>`;
+for(let i=1;i<4;i++){s+=`<line x1="${x0}" x2="${x0+pw}" y1="${y0+ph*i/4}" y2="${y0+ph*i/4}" stroke="var(--line)" stroke-opacity=".3"/>`}
+if(o.length){const xs=o.map(c=>c.s),ls=o.map(c=>c.l),bx=x0+Math.max(0,Math.min(...xs)-6)/100*pw,bx2=x0+Math.min(100,Math.max(...xs)+6)/100*pw,by=y0+(1-Math.min(100,Math.max(...ls)+6)/100)*ph,by2=y0+(1-Math.max(0,Math.min(...ls)-6)/100)*ph;s+=`<rect x="${bx}" y="${by}" width="${bx2-bx}" height="${by2-by}" fill="var(--acc)" fill-opacity=".12" stroke="var(--acc)" stroke-width="2"/>`}
+o.forEach(c=>{const x=x0+Math.min(100,Math.max(0,c.s))/100*pw,y=y0+(1-Math.min(96,Math.max(4,c.l))/100)*ph;s+=`<circle cx="${x}" cy="${y}" r="9" fill="${c.hex}" stroke="var(--ink)" stroke-opacity=".5"><title>${c.n} ${c.hex}</title></circle>`});
+s+=`<text x="${x0+pw/2}" y="${H-8}" text-anchor="middle" font-size="12" fill="var(--mut)">chroma: muted to vivid</text><text transform="translate(12 ${y0+ph/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="var(--mut)">value: dark to light</text>`;$('#vc').innerHTML=s}
+function lab(l,s){return(l<35?'dark':l<55?'medium':l<70?'light-medium':'light')+' value, '+(s<30?'muted':s<55?'moderate':'bright')+' chroma'}
+function why(R,o){const r=R.r,tr=[...S.traits].join(', '),m={l:o.reduce((a,c)=>a+c.l,0)/o.length,s:o.reduce((a,c)=>a+c.s,0)/o.length};
+const ageTxt={child:'A child character lifts value and softens chroma for a lighter, playful look.',adult:'An adult character keeps value and chroma balanced, so the palette stays vibrant but controlled.',elderly:'An elderly character lowers chroma and value, adding grey influence for dusty, sophisticated tones.'}[S.age];
+const dTxt={pale:'Pale skin is sensitive to contrast, so values are lifted slightly and saturation eased.',medium:'Medium skin has balanced contrast and works with a wide range of colours.',deep:'Deep skin supports stronger contrast, so saturation is raised.'}[S.depth];
+const w=$('#why');w.hidden=false;w.innerHTML=`<h2>Why this palette?</h2><p>${tr} score highest for ${r.p} (${r.sc[r.p]}) with ${r.s} second (${r.sc[r.s]}). ${r.p} is ${SEASONS[r.p].kw}. Twelve colours make the palette: eight from ${r.p} and four from ${r.s}.</p><p>A ${S.under} undertone adds a point to ${S.under} seasons. ${dTxt}</p><p>${ageTxt}</p><span class="chip">Temperature: ${S.under==='warm'?'warm':'cool'} bias</span><span class="chip">Result: ${lab(m.l,m.s)}</span>`}
+// colours to avoid: from the two lowest-scoring seasons, the ones furthest from the palette
+function avoid(o,r){const n=o.length,av=f=>o.reduce((a,x)=>a+f(x),0)/n,m={c:av(x=>cool(x.h)),l:av(x=>x.l),s:av(x=>x.s)};
+const low=Object.keys(SEASONS).sort((a,b)=>r.sc[a]-r.sc[b]).slice(0,2);
+const c=low.flatMap(k=>SEASONS[k].cols).map(([nm,hex])=>{const[h,s,l]=rgb2hsl(h2r(hex)),d=[[(cool(h)-m.c)*1.2,'cooler','warmer'],[s-m.s,'more vivid','more muted'],[(l-m.l)*.6,'lighter','darker']].map(([v,a,b])=>[Math.abs(v),v>0?a:b]).sort((p,q)=>q[0]-p[0]);return{nm,hex,sc:d[0][0]+d[1][0]*.5,why:'much '+d[0][1]+' than your palette'}}).sort((a,b)=>b.sc-a.sc).slice(0,6);
+$('#bad').innerHTML='<p class="lbl">colours to avoid</p><p class="hint">These come from your two lowest-scoring seasons and clash most with your palette. Used deliberately as a tiny accent, any of them can still work.</p><div class="sw no">'+c.map(x=>`<div><i style="background-color:${x.hex}"></i><b>${x.nm}</b><span>${x.hex}: ${x.why}</span></div>`).join('')+'</div>'}
+// auto-apply: split the sketch into closed regions, guess each one's role from position and size
+function skinHex(){const[h,s,l]=rgb2hsl(h2r(SK[S.depth]));return hsl2hex(h+(S.under==='warm'?6:-14),s,l)}
+function colFor(r){if(r==='Skin')return h2r(skinHex());const o=S.out[RC.assign[r]];return o?h2r(o.hex):null}
+function segment(){const cv=$('#cv'),W=cv.width,H=cv.height,N=W*H,D=RC.orig.data,L=new Uint8Array(N),lb=new Int32Array(N),st=new Int32Array(N),R=[null];
+for(let i=0;i<N;i++)L[i]=.299*D[i*4]+.587*D[i*4+1]+.114*D[i*4+2];
+for(let s=0;s<N;s++){if(lb[s]||L[s]<140)continue;const id=R.length,r={a:0,sl:0,sy:0,edge:0};R.push(r);let p=0;st[p++]=s;lb[s]=id;
+while(p){const n=st[--p],x=n%W,y=(n/W)|0;r.a++;r.sl+=L[n];r.sy+=y;if(!x||!y||x==W-1||y==H-1)r.edge=1;
+for(const m of[x>0?n-1:-1,x<W-1?n+1:-1,y>0?n-W:-1,y<H-1?n+W:-1])if(m>=0&&!lb[m]&&L[m]>=140){lb[m]=id;st[p++]=m}}}
+const big=Math.max(0,...R.filter(r=>r&&r.edge).map(r=>r.a));R.forEach(r=>{if(r&&r.edge&&r.a>big*.25)r.bg=1});
+let y0=H,y1=0,x0=W,x1=0;for(let i=0;i<N;i++){const g=lb[i];if(g&&R[g].bg)continue;const x=i%W,y=(i/W)|0;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+const fh=y1-y0||1,hz=fh/((x1-x0)||1)>1.5?.25:.55,C=R.filter(r=>r&&!r.bg&&r.a>N*.0006);
+C.forEach(r=>{r.lum=r.sl/r.a;r.head=(r.sy/r.a-y0)/fh<hz});
+C.filter(r=>r.head).sort((a,b)=>b.a-a.a).forEach((r,i)=>r.role=i?r.a>N*.002?'Hair':null:'Skin');
+C.filter(r=>!r.head).forEach(r=>r.role=r.a>N*.02?'Clothing':'Accessory');
+const mp=new Int32Array(lb);for(let n=0;n<N;n++){if(lb[n])continue;const x=n%W,y=(n/W)|0;mp[n]=(x>0&&lb[n-1])||(x<W-1&&lb[n+1])||(y>0&&lb[n-W])||(y<H-1&&lb[n+W])||0}
+RC.map=mp;RC.rg=R}
+// sketch recolouring (Canvas API)
+const RC={orig:null,regs:[],role:'Hair',assign:{Hair:0,Clothing:1,Accessory:2}};
+function initRC(img){const cv=$('#cv'),sc=Math.min(1,460/img.naturalWidth,520/img.naturalHeight);cv.width=Math.round(img.naturalWidth*sc);cv.height=Math.round(img.naturalHeight*sc);const x=cv.getContext('2d',{willReadFrequently:true});x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.drawImage(img,0,0,cv.width,cv.height);RC.orig=x.getImageData(0,0,cv.width,cv.height);RC.regs=[];segment();$('#rc').hidden=false;rcChips();rcDraw()}
+function rcChips(){$('#rcnote').hidden=!!S.out;const r=$('#roles');r.innerHTML='';['Skin','Hair','Clothing','Accessory'].forEach(n=>{const b=document.createElement('button');b.textContent=n;b.setAttribute('aria-pressed',RC.role===n);b.onclick=()=>{RC.role=n;rcChips()};r.appendChild(b)});
+const c=$('#rchips');c.innerHTML='';(RC.role==='Skin'&&S.out?[{hex:skinHex(),n:'Skin'}]:S.out||[]).forEach((o,i)=>{const b=document.createElement('button');b.className='chipc';b.style.background=o.hex;b.title=o.n;b.setAttribute('aria-label',RC.role+': '+o.n+' '+o.hex);b.setAttribute('aria-pressed',RC.assign[RC.role]===i);b.onclick=()=>{RC.assign[RC.role]=i;rcChips();rcDraw()};c.appendChild(b)})}
+function rcDraw(){if(!RC.orig)return;const cv=$('#cv'),D=RC.orig.data,d=new ImageData(new Uint8ClampedArray(D),cv.width,cv.height);
+if(S.out&&RC.map){const T={};for(let n=0;n<RC.map.length;n++){const r=RC.rg[RC.map[n]];if(!r||!r.role)continue;const t=T[r.role]||(T[r.role]=colFor(r.role));if(!t)continue;const i=n*4,k=Math.min(1,(.299*D[i]+.587*D[i+1]+.114*D[i+2])/Math.max(r.lum,30));for(let c=0;c<3;c++)d.data[i+c]=t[c]*k}}
+if(S.out)RC.regs.forEach(g=>{const t=colFor(g.role);if(!t)return;for(const n of g.px){const i=n*4,k=Math.min(1,(.299*D[i]+.587*D[i+1]+.114*D[i+2])/Math.max(g.lum,30));for(let c=0;c<3;c++)d.data[i+c]=t[c]*k}});cv.getContext('2d').putImageData(d,0,0)}
+$('#cv').onclick=e=>{if(!S.out||!RC.orig)return;const cv=$('#cv'),b=cv.getBoundingClientRect(),W=cv.width,H=cv.height,D=RC.orig.data,tol=+$('#tol').value*3,
+px=Math.floor((e.clientX-b.left)*W/b.width),py=Math.floor((e.clientY-b.top)*H/b.height),s=(py*W+px)*4,sr=D[s],sg=D[s+1],sb=D[s+2],lum=.299*sr+.587*sg+.114*sb;
+const seen=new Uint8Array(W*H),st=[py*W+px],out=[];seen[st[0]]=1;
+while(st.length){const n=st.pop(),i=n*4;if(Math.abs(D[i]-sr)+Math.abs(D[i+1]-sg)+Math.abs(D[i+2]-sb)>tol)continue;out.push(n);const x=n%W,y=(n/W)|0;
+if(x>0&&!seen[n-1]){seen[n-1]=1;st.push(n-1)}if(x<W-1&&!seen[n+1]){seen[n+1]=1;st.push(n+1)}if(y>0&&!seen[n-W]){seen[n-W]=1;st.push(n-W)}if(y<H-1&&!seen[n+W]){seen[n+W]=1;st.push(n+W)}}
+const inM=new Uint8Array(W*H);for(const n of out)inM[n]=1;const ext=[];for(const n of out){const x=n%W,y=(n/W)|0;for(const m of [x>0?n-1:-1,x<W-1?n+1:-1,y>0?n-W:-1,y<H-1?n+W:-1]){if(m>=0&&!inM[m]){inM[m]=1;ext.push(m)}}}for(const m of ext)out.push(m);
+RC.regs.push({role:RC.role,px:out,lum});rcDraw()};
+$('#undo').onclick=()=>{RC.regs.pop();rcDraw()};
+$('#rs').onclick=()=>{if(S.calc){setSliders(S.calc);render()}};
+$('#clr').onclick=()=>{S.traits.clear();drawTraits();run()};
+$('#copyall').onclick=()=>{if(!S.out)return;const b=$('#copyall');navigator.clipboard&&navigator.clipboard.writeText(S.out.map(c=>c.n+' '+c.hex).join('\n')).catch(()=>{});b.textContent='Copied';setTimeout(()=>b.textContent='Copy all hex codes',900)};
+function dl(b,name,data){const u=URL.createObjectURL(data instanceof Blob?data:new Blob([data],{type:'image/svg+xml'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+$('#savepng').onclick=()=>$('#cv').toBlob(b=>b&&dl($('#savepng'),'character-recolour.png',b));
+$('#savepal').onclick=()=>{if(!S.out)return;const sv=S.out.map((c,i)=>`<rect x="${i*90}" y="0" width="90" height="90" fill="${c.hex}"/><text x="${i*90+6}" y="106" font-family="sans-serif" font-size="11">${c.n}</text><text x="${i*90+6}" y="122" font-family="sans-serif" font-size="11" fill="#666">${c.hex}</text>`).join('');dl($('#savepal'),'character-palette.svg',`<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="132"><rect width="1080" height="132" fill="#fff"/>${sv}</svg>`)};
+function example(){S.under='warm';S.depth='medium';S.age='adult';S.traits=new Set(['Energetic','Passionate','Brave']);['under','depth','age'].forEach(k=>$('#'+k).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S[k])));drawTraits();run();$('#pal').scrollIntoView({behavior:'smooth',block:'start'})}
+$('#ex').onclick=example;wheels(null);vc([]);$('#reset').onclick=()=>{RC.regs=[];rcDraw()};
+try{const j=JSON.parse(localStorage.getItem('cpa')||'null');if(j&&(j.u||j.d||j.a||(j.t&&j.t.length))){window.restoring=true;S.under=j.u;S.depth=j.d;S.age=j.a;S.traits=new Set(j.t||[]);['under','depth','age'].forEach(k=>$('#'+k).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===S[k])));drawTraits();run();window.restoring=false}}catch(e){window.restoring=false}
+</script></body></html>
