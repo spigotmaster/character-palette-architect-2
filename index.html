@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Character Palette Architect</title>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css"></head><body>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Character Palette Architect</title>
+  <link rel="stylesheet" href="css/style.css">   <!-- 1. in the head -->
+</head>
+<body>
 <header><h1>Character Palette Architect</h1><p>Colour palettes for characters, with the reasoning shown.</p><div class="intro"><p><b>How to use it:</b> choose a skin undertone and depth, tap one or more personality traits, then choose an age. All four choices are needed. Your 12-colour palette appears under step 3, with the season wheels, sliders and an explanation. Optionally, upload a sketch to try the colours on it.</p><div class="opts"><button id="ex">Try an example</button></div></div></header>
 <main>
 <div class="L">
@@ -32,4 +34,6 @@
 <section class="why" id="why" hidden></section>
 </div>
 </main>
-<script src="js/app.js"></script></body></html>
+<script src="js/app.js"></script>              <!-- 2. last thing before </body> -->
+</body>
+</html>
